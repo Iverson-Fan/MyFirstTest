@@ -1,0 +1,6 @@
+ body{
+	  	position: absolute;
+	  	/* 图片名只能是英文和数字*/
+	  	background: url("2023875.jpg"); 
+	  	background-size: cover;	  	  	
+	  }
