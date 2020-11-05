@@ -1,0 +1,51 @@
+//jsp部分
+<form name="from" method="get">
+		<label>学生ID：</label><input type="text" name="IDtext"/><br/>
+		<label>学生姓名：</label><input type="text" name="nametext"/><br/>
+		<label>学生性别：</label><input type="text" name="sextext"/><br/>
+    <input type="button" value="添加" onclick="addAction()">
+    <input type="button" value="删除" onclick="deleteAction()">
+</form>
+
+<script type="text/javascript">
+    function addAction(){
+        document.from.action="LoginServlet";//提交的url
+        document.from.submit();
+    }
+
+    function deleteAction(){
+        document.from.action="Image";//提交的url
+        document.from.submit();
+    }
+    //java部分
+    //获取页面输入信息
+		String uid = request.getParameter("IDtext");
+		String uname = request.getParameter("nametext");
+		String usex = request.getParameter("sextext");
+		
+		Person person = new Person();
+		person.setUid(Integer.valueOf(uid).intValue());
+		person.setUname(uname);
+		person.setUsex(usex);
+		PersonService personService = new PersonServiceImpl();
+		try {	
+			//操作成功，两秒后跳转
+			//页面输入内容存入数据库
+			personService.addPerson(person);
+			//设置页面文本格式
+			response.setContentType("text/html;charset=utf-8");
+			//向页面打印内容
+			PrintWriter pw = response.getWriter();
+			pw.print("注册成功，正在跳转登录页面！");
+			//"Refresh",->刷新页面， "2;-> 几秒跳转页面 =Success.jsp->跳转页面");
+			response.setHeader("Refresh", "2;url=Success.jsp");
+		
+			
+			
+			 //成功操作，直接跳转
+//			request.getRequestDispatcher("Success.jsp").forward(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			//出现异常
+			request.getRequestDispatcher("Error.jsp").forward(request, response);
+		}
